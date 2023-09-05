@@ -1,6 +1,7 @@
 package com.example.dedalus_ui.components
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -12,23 +13,33 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -40,6 +51,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -47,6 +59,7 @@ import androidx.compose.ui.unit.sp
 import com.example.dedalus_ui.R
 import com.example.dedalus_ui.components.data.NavigationItem
 import com.example.dedalus_ui.ui.theme.*
+import org.w3c.dom.Text
 
 
 // components package contains the composable elements that are common to both the screens.
@@ -486,5 +499,173 @@ fun NavigationDrawerText(title: String, textUnit: TextUnit){
     )
     )
 }
+
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun doctorScreenDropDownAppMenu(parentList : List<String>)
+{
+
+    var expandedState by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf(parentList[0]) }
+    var mContext = LocalContext.current
+
+
+    var childOptions = remember{
+        mutableStateListOf<String>("Knee", "Back", "Shoulder", "Stomach", "Broken Bone", "Blood Injury")
+    }
+    var expandedStateChild by remember { mutableStateOf(false) }
+    var selectedOptionChild by remember { mutableStateOf(childOptions[0]) }
+
     
+    ExposedDropdownMenuBox(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20))
+            .background(Color.White)
+            .padding(bottom = 16.dp),
+        expanded = expandedState,
+        onExpandedChange = {
+            expandedState = !expandedState
+        },
+    )
+    {
+        
+        TextField(value = selectedOption, onValueChange = {}, 
+                    trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedState)},
+                    readOnly = true,
+                    textStyle = TextStyle.Default.copy(fontSize = 20.sp),
+                    modifier = Modifier.background(WhiteColor)
+        )
+        
+        
+        ExposedDropdownMenu(
+            expanded = expandedState,
+            onDismissRequest = { expandedState = false },
+            modifier = Modifier
+                .clip(RoundedCornerShape(20))
+                .background(Color.White)
+            ) {
+
+            parentList.forEach{
+                eachoption -> DropdownMenuItem(onClick = {
+                    selectedOption = eachoption
+                expandedState = false
+                Toast.makeText(mContext, ""+selectedOption, Toast.LENGTH_SHORT).show()
+
+                // adding the dependancy list based on parent list
+                childOptions.clear()
+
+                if(selectedOption.equals("Pain")){
+                        childOptions.add("Knee")
+                        childOptions.add("Back")
+                        childOptions.add("Shoulder")
+                        childOptions.add("Stomach")
+                        childOptions.add("Broken Bone")
+                        childOptions.add("Blood Injury")
+
+                }else{
+                    childOptions.add("Fever")
+                    childOptions.add("Cold")
+                    childOptions.add("Cough")
+                    childOptions.add("Conjuctivital")
+                    childOptions.add("Typhoid")
+                    childOptions.add("Cholera")
+                }
+
+            }) {
+                    Text(text = eachoption, fontSize = 20.sp)
+            }
+            }
+            
+        }
+        
+    }
+
+
+    // child dropdownMenu
+    ExposedDropdownMenuBox(
+        expanded = expandedStateChild,
+        onExpandedChange = {expandedStateChild = !expandedStateChild},
+        modifier = Modifier
+            .clip(RoundedCornerShape(20))
+            .background(Color.White)
+            .padding(bottom = 16.dp)
+    )
+    {
+        TextField(value = selectedOptionChild, onValueChange = {},
+            trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedStateChild)},
+            readOnly = true,
+            textStyle = TextStyle.Default.copy(fontSize = 20.sp),
+            modifier = Modifier.background(WhiteColor)
+        )
+
+
+        ExposedDropdownMenu(
+            expanded = expandedStateChild,
+            onDismissRequest = { expandedStateChild = false },
+            modifier = Modifier
+                .clip(RoundedCornerShape(20))
+                .background(Color.White)
+            )
+        {
+
+            childOptions.forEach {
+                    eachoption -> DropdownMenuItem(onClick = {
+                selectedOptionChild = eachoption
+                expandedStateChild = false
+                Toast.makeText(mContext, ""+selectedOptionChild, Toast.LENGTH_SHORT).show()
+            })
+            {
+                Text(text = eachoption, fontSize = 20.sp)
+            }
+
+            }
+
+        }
+
+
+    }
+
+
+
+
+}
+
+@Composable
+fun TextForDetailsField(labelValue:String, painterResource: Painter, onTextSelected: (String) -> Unit,
+                errorStatus : Boolean = false
+){
+
+    val textValue = remember{   // remember function --> remembers the last value entered by the user
+        mutableStateOf("")
+    }
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(componentShapes.small),
+        label = { Text(text = labelValue) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Primary,
+            focusedLabelColor = Primary,
+            cursorColor = Primary,
+            backgroundColor = BgColor
+
+        ),
+        // for adding "NEXT" button in our keyboard
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+        singleLine = true,    // for adding "NEXT" button in our keyboard
+        maxLines = 1 ,     // for adding "NEXT" button in our keyboard
+
+        value = textValue.value,
+        onValueChange ={     // whenever user enter anything onValueChange will trigger
+            textValue.value = it
+            onTextSelected(it)
+        },
+        leadingIcon = {
+            Icon(painter = painterResource, contentDescription = "")
+        },
+        isError = !errorStatus
+    )
+
+}
 

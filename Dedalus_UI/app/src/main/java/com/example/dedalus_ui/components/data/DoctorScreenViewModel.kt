@@ -58,4 +58,6 @@ class DoctorScreenViewModel : ViewModel() {
         firebaseAuth.addAuthStateListener (authStateListener)
     }
 
+
+
 }

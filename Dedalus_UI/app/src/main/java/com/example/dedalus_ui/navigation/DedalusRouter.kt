@@ -15,7 +15,7 @@ sealed class Screen(){
 object DedalusRouter{
 
     // this is our default screen or first screen
-    var currentScreen : MutableState<Screen> = mutableStateOf(Screen.LoginScreen)
+    var currentScreen : MutableState<Screen> = mutableStateOf(Screen.DoctorSelectionScreen)
 
     // whatever destination we pass in this method that becomes the current screen
     fun navigateTo(destination : Screen){
