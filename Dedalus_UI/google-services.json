@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "717277321074",
+    "project_id": "dedalusui",
+    "storage_bucket": "dedalusui.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:717277321074:android:2482696c18bf393a44efeb",
+        "android_client_info": {
+          "package_name": "com.example.dedalus_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "717277321074-v70gg8ni3qcmbfpgg9fg4u339vp0qif0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvHrqH8DKfUPsR-jLJq9PdyOYQ83TQol0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "717277321074-v70gg8ni3qcmbfpgg9fg4u339vp0qif0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
