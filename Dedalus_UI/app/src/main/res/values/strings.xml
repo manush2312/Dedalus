@@ -20,4 +20,8 @@
     <string name="doctor_selection_screen">Doctor Selection Screen</string>
     <string name="navigation_header">Navigation Header</string>
     <string name="home">Home</string>
+    <string name="enter_first_name_of_patient"> First Name of Patient</string>
+    <string name="enter_middle_name_of_patient"> Middle Name of Patient</string>
+    <string name="enter_last_name_of_patient"> Last Name of Patient</string>
+    <string name="enter_address_of_patient"> Address of Patient</string>
 </resources>

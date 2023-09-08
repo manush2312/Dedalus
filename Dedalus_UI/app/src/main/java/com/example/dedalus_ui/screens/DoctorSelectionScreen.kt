@@ -9,18 +9,17 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Surface
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.dedalus_ui.R
 import com.example.dedalus_ui.components.*
-import com.example.dedalus_ui.components.data.DoctorScreenViewModel
-import com.example.dedalus_ui.components.data.SignUp.SignUpViewModel
+import com.example.dedalus_ui.components.data.DoctorSelection.DoctorScreenViewModel
+import com.example.dedalus_ui.components.data.DoctorSelection.DoctorSelectionUIEvent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -61,11 +60,47 @@ fun DoctorSelectionScreen(doctorViewModel: DoctorScreenViewModel = viewModel()){
             modifier = Modifier
                 .fillMaxSize()
                 .background(Color.White)
-                .padding(start = 16.dp, top = 16.dp, end = 16.dp )
+                .padding(28.dp)
         ) {
             Column(modifier = Modifier.fillMaxSize()) {
 
 //                HeadingTextForScreensComponent(value = "Enter the basic Details:")
+
+                MyTextField(
+                    labelValue = stringResource(R.string.enter_first_name_of_patient),
+                    painterResource(id = R.drawable.profile),
+                    onTextSelected = {
+                        doctorViewModel.onEvent(DoctorSelectionUIEvent.FirstNameChanged(it))
+                    },
+                    errorStatus = doctorViewModel.doctorSelectionUIState.value.firstnameError
+                )
+
+                MyTextField(
+                    labelValue = stringResource(R.string.enter_middle_name_of_patient),
+                    painterResource(id = R.drawable.profile),
+                    onTextSelected = {
+                        doctorViewModel.onEvent(DoctorSelectionUIEvent.MiddleNameChanged(it))
+                    },
+                    errorStatus = doctorViewModel.doctorSelectionUIState.value.middlenameError
+                )
+
+                MyTextField(
+                    labelValue = stringResource(R.string.enter_last_name_of_patient),
+                    painterResource(id = R.drawable.profile),
+                    onTextSelected = {
+                        doctorViewModel.onEvent(DoctorSelectionUIEvent.LastNameChanged(it))
+                    },
+                    errorStatus = doctorViewModel.doctorSelectionUIState.value.lastnameError
+                )
+
+                TextForAddressField(
+                    labelValue = stringResource(R.string.enter_address_of_patient),
+                    painterResource(id = R.drawable.location),
+                    onTextSelected = {
+                        doctorViewModel.onEvent(DoctorSelectionUIEvent.AddressChanged(it))
+                    },
+                    errorStatus = doctorViewModel.doctorSelectionUIState.value.addressError
+                )
 
                 val category = listOf("Pain", "Infected")
                 val affected_part = listOf("Knee Pain", "Back Pain", "Shoulder Pain", "Stomach Pain")

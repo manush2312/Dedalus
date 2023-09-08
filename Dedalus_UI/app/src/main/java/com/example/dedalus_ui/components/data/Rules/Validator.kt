@@ -15,14 +15,26 @@ object Validator {
         return ValidationResult(
             (!lName.isNullOrEmpty() && lName.length >= 2)
         )
-
     }
+
+
+    fun validateMiddleName(mName : String) : ValidationResult{
+        return ValidationResult(
+            (!mName.isNullOrEmpty())
+        )
+    }
+
+    fun validateAddress(addr : String) : ValidationResult{
+        return ValidationResult(
+            (!addr.isNullOrEmpty())
+        )
+    }
+
 
     fun validateEmail(email : String) : ValidationResult{
         return ValidationResult(
             (!email.isNullOrEmpty())
         )
-
     }
 
     fun validatePassword(password : String) : ValidationResult{

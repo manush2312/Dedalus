@@ -1,4 +1,4 @@
-package com.example.dedalus_ui.components.data
+package com.example.dedalus_ui.components.data.DoctorSelection
 
 import androidx.compose.ui.graphics.vector.ImageVector
 

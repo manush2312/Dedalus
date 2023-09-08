@@ -13,9 +13,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Visibility
@@ -25,13 +22,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -39,7 +34,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -51,15 +45,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.dedalus_ui.R
-import com.example.dedalus_ui.components.data.NavigationItem
+import com.example.dedalus_ui.components.data.DoctorSelection.NavigationItem
 import com.example.dedalus_ui.ui.theme.*
-import org.w3c.dom.Text
 
 
 // components package contains the composable elements that are common to both the screens.
@@ -522,7 +514,7 @@ fun doctorScreenDropDownAppMenu(parentList : List<String>)
         modifier = Modifier
             .clip(RoundedCornerShape(20))
             .background(Color.White)
-            .padding(bottom = 16.dp),
+            .padding(top = 16.dp ,bottom = 16.dp),
         expanded = expandedState,
         onExpandedChange = {
             expandedState = !expandedState
@@ -632,7 +624,7 @@ fun doctorScreenDropDownAppMenu(parentList : List<String>)
 }
 
 @Composable
-fun TextForDetailsField(labelValue:String, painterResource: Painter, onTextSelected: (String) -> Unit,
+fun TextForAddressField(labelValue:String, painterResource: Painter, onTextSelected: (String) -> Unit,
                 errorStatus : Boolean = false
 ){
 
@@ -654,7 +646,7 @@ fun TextForDetailsField(labelValue:String, painterResource: Painter, onTextSelec
         // for adding "NEXT" button in our keyboard
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
         singleLine = true,    // for adding "NEXT" button in our keyboard
-        maxLines = 1 ,     // for adding "NEXT" button in our keyboard
+        maxLines = 3 ,     // for adding "NEXT" button in our keyboard
 
         value = textValue.value,
         onValueChange ={     // whenever user enter anything onValueChange will trigger
