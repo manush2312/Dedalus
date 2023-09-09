@@ -20,6 +20,7 @@ import com.example.dedalus_ui.R
 import com.example.dedalus_ui.components.*
 import com.example.dedalus_ui.components.data.DoctorSelection.DoctorScreenViewModel
 import com.example.dedalus_ui.components.data.DoctorSelection.DoctorSelectionUIEvent
+import com.example.dedalus_ui.components.data.SignUp.SignUpUIEvent
 import kotlinx.coroutines.launch
 
 @Composable
@@ -93,6 +94,30 @@ fun DoctorSelectionScreen(doctorViewModel: DoctorScreenViewModel = viewModel()){
                     errorStatus = doctorViewModel.doctorSelectionUIState.value.lastnameError
                 )
 
+                NumberComponent(
+                    labelValue = stringResource(R.string.age),
+                    painterResource(id = R.drawable.profile),
+                    onTextSelected = {
+                        doctorViewModel.onEvent(DoctorSelectionUIEvent.AgeChanged(it))
+                    },
+                    errorStatus = doctorViewModel.doctorSelectionUIState.value.ageError
+                )
+
+                NumberComponent(
+                    labelValue = stringResource(R.string.mobile_number),
+                    painterResource(id = R.drawable.phonecall),
+                    onTextSelected = {
+                        doctorViewModel.onEvent(DoctorSelectionUIEvent.PhoneNumberChanged(it))
+                    },
+                    errorStatus = doctorViewModel.doctorSelectionUIState.value.phoneNumberError
+                )
+
+                val bloodGroup = listOf<String>("A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-")
+                DropDownAppMenu(placeholderList = stringResource(R.string.blood_group), bloodGroup)
+
+
+
+
                 TextForAddressField(
                     labelValue = stringResource(R.string.enter_address_of_patient),
                     painterResource(id = R.drawable.location),
@@ -102,9 +127,18 @@ fun DoctorSelectionScreen(doctorViewModel: DoctorScreenViewModel = viewModel()){
                     errorStatus = doctorViewModel.doctorSelectionUIState.value.addressError
                 )
 
-                val category = listOf("Pain", "Infected")
-                val affected_part = listOf("Knee Pain", "Back Pain", "Shoulder Pain", "Stomach Pain")
-                doctorScreenDropDownAppMenu(parentList = category)
+
+                ButtonComponent(value = stringResource(id = R.string.update),
+                    onButtonClicked = {    // we will invoke this function whenever we click the button
+                        doctorViewModel.onEvent(DoctorSelectionUIEvent.UpdateButtonClicked)
+
+                    },
+                    isEnabled = doctorViewModel.allValidationsPassed.value
+                )
+
+//                val category = listOf("Pain", "Infected")
+//                val affected_part = listOf("Knee Pain", "Back Pain", "Shoulder Pain", "Stomach Pain")
+//                doctorScreenDropDownAppMenu(parentList = category)
                 
 
             }

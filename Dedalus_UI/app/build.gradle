@@ -62,12 +62,15 @@ dependencies {
     // dependency for Data-Layer(View Model)
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1")
 
+    implementation platform('com.google.firebase:firebase-bom:32.2.3')
+
 
 
 
     // for firebase
     implementation platform('com.google.firebase:firebase-bom:31.0.0')
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx:20.2.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -22,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -514,7 +516,7 @@ fun doctorScreenDropDownAppMenu(parentList : List<String>)
         modifier = Modifier
             .clip(RoundedCornerShape(20))
             .background(Color.White)
-            .padding(top = 16.dp ,bottom = 16.dp),
+            .padding(top = 16.dp, bottom = 16.dp),
         expanded = expandedState,
         onExpandedChange = {
             expandedState = !expandedState
@@ -526,7 +528,14 @@ fun doctorScreenDropDownAppMenu(parentList : List<String>)
                     trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedState)},
                     readOnly = true,
                     textStyle = TextStyle.Default.copy(fontSize = 20.sp),
-                    modifier = Modifier.background(WhiteColor)
+                    modifier = Modifier.background(WhiteColor),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Primary,
+                focusedLabelColor = Primary,
+                cursorColor = Primary,
+                backgroundColor = BgColor
+
+            )
         )
         
         
@@ -588,7 +597,14 @@ fun doctorScreenDropDownAppMenu(parentList : List<String>)
             trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedStateChild)},
             readOnly = true,
             textStyle = TextStyle.Default.copy(fontSize = 20.sp),
-            modifier = Modifier.background(WhiteColor)
+            modifier = Modifier.background(WhiteColor),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Primary,
+                focusedLabelColor = Primary,
+                cursorColor = Primary,
+                backgroundColor = BgColor
+
+            )
         )
 
 
@@ -660,4 +676,127 @@ fun TextForAddressField(labelValue:String, painterResource: Painter, onTextSelec
     )
 
 }
+
+
+@Composable
+fun NumberComponent(labelValue:String, painterResource: Painter, onTextSelected: (String) -> Unit,
+                        errorStatus : Boolean = false
+){
+
+    val textValue = remember{   // remember function --> remembers the last value entered by the user
+        mutableStateOf("")
+    }
+    OutlinedTextField(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clip(componentShapes.small),
+        label = { Text(text = labelValue) },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            focusedBorderColor = Primary,
+            focusedLabelColor = Primary,
+            cursorColor = Primary,
+            backgroundColor = BgColor
+
+        ),
+        // for adding "NEXT" button in our keyboard
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Next),
+        singleLine = true,    // for adding "NEXT" button in our keyboard
+        maxLines = 1 ,     // for adding "NEXT" button in our keyboard
+
+        value = textValue.value,
+        onValueChange ={     // whenever user enter anything onValueChange will trigger
+            textValue.value = it
+            onTextSelected(it)
+        },
+        leadingIcon = {
+            Icon(painter = painterResource, contentDescription = "")
+        },
+        isError = !errorStatus
+    )
+
+}
+
+
+
+@OptIn(ExperimentalMaterialApi::class)
+@Composable
+fun DropDownAppMenu(placeholderList : String, parentList : List<String>)
+{
+
+    var expandedState by remember { mutableStateOf(false) }
+    var selectedOption by remember { mutableStateOf("") }
+    var mContext = LocalContext.current
+
+
+
+    ExposedDropdownMenuBox(
+        modifier = Modifier
+            .clip(RoundedCornerShape(20))
+            //.background()
+            .padding(top = 16.dp, bottom = 16.dp),
+        expanded = expandedState,
+        onExpandedChange = {
+            expandedState = !expandedState
+        },
+    )
+    {
+
+        TextField(value = selectedOption, onValueChange = {},
+            placeholder = { Text(placeholderList) },
+            trailingIcon = {ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedState)},
+            readOnly = true,
+            textStyle = TextStyle.Default.copy(fontSize = 20.sp),
+            modifier = Modifier.background(Color.White),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = Primary,
+                focusedLabelColor = Primary,
+                cursorColor = Primary,
+                backgroundColor = BgColor
+
+            )
+        )
+
+
+        ExposedDropdownMenu(
+            expanded = expandedState,
+            onDismissRequest = { expandedState = false },
+            modifier = Modifier
+                .clip(RoundedCornerShape(20))
+                .background(Color.White)
+        ) {
+
+            parentList.forEach{
+                    eachoption -> DropdownMenuItem(onClick = {
+                selectedOption = eachoption
+                expandedState = false
+                Toast.makeText(mContext, ""+selectedOption, Toast.LENGTH_SHORT).show()
+
+
+
+            }) {
+                Text(text = eachoption, fontSize = 20.sp)
+            }
+            }
+
+        }
+
+    }
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
 

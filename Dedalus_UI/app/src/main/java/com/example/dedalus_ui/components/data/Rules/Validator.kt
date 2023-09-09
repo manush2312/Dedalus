@@ -30,6 +30,18 @@ object Validator {
         )
     }
 
+    fun validatePhoneNumber(phoneNumber : String) : ValidationResult{
+        return ValidationResult(
+            (!phoneNumber.isNullOrEmpty())
+        )
+    }
+
+    fun validateAge(age : String) : ValidationResult{
+        return ValidationResult(
+            (!age.isNullOrEmpty())
+        )
+    }
+
 
     fun validateEmail(email : String) : ValidationResult{
         return ValidationResult(

@@ -1,17 +1,21 @@
 package com.example.dedalus_ui.components.data.DoctorSelection
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import com.example.dedalus_ui.components.data.Rules.Validator
 import com.example.dedalus_ui.components.data.SignUp.RegistrationUIState
 import com.example.dedalus_ui.navigation.DedalusRouter
 import com.example.dedalus_ui.navigation.Screen
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class DoctorScreenViewModel : ViewModel() {
 
@@ -98,6 +102,28 @@ class DoctorScreenViewModel : ViewModel() {
                 validateDataWithRules()
                 printState()
             }
+
+            is DoctorSelectionUIEvent.PhoneNumberChanged ->{
+                doctorSelectionUIState.value = doctorSelectionUIState.value.copy(
+                    phoneNumber = event.phoneNumber
+                )
+                validateDataWithRules()
+                printState()
+            }
+
+            is DoctorSelectionUIEvent.AgeChanged ->{
+                doctorSelectionUIState.value = doctorSelectionUIState.value.copy(
+                    age = event.age
+                )
+                validateDataWithRules()
+                printState()
+            }
+
+
+            is DoctorSelectionUIEvent.UpdateButtonClicked ->{
+                UpdateDetails()
+            }
+
         }
     }
 
@@ -129,6 +155,14 @@ class DoctorScreenViewModel : ViewModel() {
             addr = doctorSelectionUIState.value.address
         )
 
+        val phoneNumberResult = Validator.validatePhoneNumber(
+            phoneNumber = doctorSelectionUIState.value.phoneNumber
+        )
+
+        val ageResult = Validator.validateAge(
+            age = doctorSelectionUIState.value.age
+        )
+
 
 
         Log.d(TAG, "Inside_validateDataWithRules")
@@ -136,6 +170,8 @@ class DoctorScreenViewModel : ViewModel() {
         Log.d(TAG, "lNameResult = $lNameResult")
         Log.d(TAG, "mNameResult = $mNameResult")
         Log.d(TAG, "addressResult = $addressResult")
+        Log.d(TAG, "phoneNumberResult = $phoneNumberResult")
+        Log.d(TAG, "ageResult = $ageResult")
 
 
 
@@ -143,15 +179,40 @@ class DoctorScreenViewModel : ViewModel() {
             firstnameError =  fNameResult.status,
             lastnameError = lNameResult.status,
             middlenameError = mNameResult.status,
-            addressError = addressResult.status
+            addressError = addressResult.status,
+            phoneNumberError = phoneNumberResult.status,
+            ageError = ageResult.status
         )
 
         // if all the details entered is true then update "allValidationsPassed"
-        if(fNameResult.status && lNameResult.status && mNameResult.status && addressResult.status){
+        if(fNameResult.status && lNameResult.status && mNameResult.status && addressResult.status && phoneNumberResult.status && ageResult.status){
             allValidationsPassed.value = true
         }else{
             allValidationsPassed.value = false
         }
+
+    }
+
+
+
+    private fun UpdateDetails(){
+
+
+
+        val database = Firebase.database
+        val myRef = database.getReference("Patient Details")
+
+        val patientInfo = PatientDetails(
+            doctorSelectionUIState.value.firstname.toString(),
+            doctorSelectionUIState.value.middlename.toString(),
+            doctorSelectionUIState.value.lastname.toString(),
+            doctorSelectionUIState.value.phoneNumber.toInt(),
+            doctorSelectionUIState.value.age.toInt(),
+            doctorSelectionUIState.value.address.toString(),
+
+        )
+        myRef.child(doctorSelectionUIState.value.firstname).setValue(patientInfo)
+
 
     }
 

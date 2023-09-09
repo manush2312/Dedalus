@@ -8,6 +8,9 @@ sealed class DoctorSelectionUIEvent {
     data class MiddleNameChanged(val middlename : String) : DoctorSelectionUIEvent()
     data class LastNameChanged(val lastname : String) : DoctorSelectionUIEvent()
     data class AddressChanged(val address : String) : DoctorSelectionUIEvent()
+    data class PhoneNumberChanged(val phoneNumber : String) : DoctorSelectionUIEvent()
+    data class AgeChanged(val age : String) : DoctorSelectionUIEvent()
 
 
+    object UpdateButtonClicked : DoctorSelectionUIEvent()
 }
